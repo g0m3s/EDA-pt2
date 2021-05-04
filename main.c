@@ -25,6 +25,8 @@ struct tipo_vetor
 
 void criar_vetor(vetor_vertices *vetor, int n_vertice);
 void ligar_vetor(vetor_vertices *vetor, int valor, int j, int linha);
+void colorir_vetor(vetor_vertices *vetor);
+void imprimir_vetor(vetor_vertices *vetor);
 
 
 
