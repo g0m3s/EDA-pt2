@@ -1,0 +1,41 @@
+
+// void colorir_vetor(lista *vetor)
+// {
+// 	int nova_cor=1;
+// 	vetor_vertices *aux, *aux1;
+
+// 	aux = vetor->primeiro;
+
+// 	while(aux->proximo_vertice != NULL)
+// 	{
+// 		aux1 = vetor;
+// 		if(aux->primeiro_vizinho != NULL)
+// 		{
+// 			while(aux1->proximo_vertice != NULL)
+// 			{
+// 				if(aux1->vertice == aux->vertice)
+// 				{
+// 					aux->cor = aux1->cor;
+// 				}
+// 				aux1 = aux1 ->proximo_vertice;
+// 			}
+
+// 			aux1 = vetor;
+
+// 			while(aux1->proximo_vertice != NULL)
+// 			{
+
+// 				if(aux1->vertice == aux->vertice && aux1->vertice != aux->vertice)
+// 				{
+// 					nova_cor++;
+// 				}
+// 			}
+
+// 			aux->cor = nova_cor;
+// 		}
+
+// 		aux = aux->proximo_vertice;
+// 	}
+
+// 	printf("Numero de cores utilizado foi de %d", nova_cor);
+// }
