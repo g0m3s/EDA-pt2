@@ -30,7 +30,7 @@ void colorir_vetor(lista *vetor);
 void imprimir_vetor(lista *vetor);
 
 
-int main()
+int main() //CREU
 {
 	FILE *arquivo;
 	lista vetor;
@@ -49,13 +49,13 @@ int main()
 		{
 			fscanf(arquivo,"%d", &valor);
 
-			if(j > (n_vertice*linha))
+			if(j > (n_vertice*linha)) //é o numero do vertice na qual a linha da matriz se refere, sempre que pula de linha na matriz muda o vertice referente
 			{
 				linha++;
 			}
 
-			ligar_vetor(&vetor,valor,j,linha, n_vertice);
-			j++;
+			ligar_vetor(&vetor,valor,j,linha, n_vertice);//lendo um termo da matriz por vez e enviando para a função, junto do valor (0 ou 1), j (numero do termo)
+			j++;						//e a linha (vertice referente na linha da matriz)
 		}
 
 		colorir_vetor(&vetor);
@@ -80,10 +80,10 @@ void criar_vetor(lista *vetor, int n_vertice)
 	for (i = 0; i < n_vertice; i++)
 	{
         aux = (vetor_vertices*)malloc(sizeof(vetor_vertices));
-        aux -> proximo_vertice = NULL;
+        aux -> proximo_vertice = NULL; // n representa o vertice vizinho, é apenas a lista de vertices em ordem sequencial (aleatorio visualmente)
         aux -> vertice = (i+1);
         aux -> cor = NULL;
-        aux -> primeiro_vizinho = NULL;
+        aux -> primeiro_vizinho = NULL; //vizinho inicialmente será Null pois n lemos a matriz de adjacencia ainda
 
         if(vetor->primeiro == NULL)
 		{
@@ -107,42 +107,42 @@ void ligar_vetor(lista *vetor, int valor, int j, int linha, int n_vertice)
 	vetor_vertices *aux_vertice;
 	vizinho *aux_vizinho1, *aux_vizinho2;
 
-    if(valor == 1)
+    if(valor == 1) //valor = 1 quer dizer q o vertice que a linha representa é vizinho do vertice que a coluna representa
     {
 		aux_vizinho2 = (vizinho*)malloc(sizeof(vizinho));
-		aux_vizinho2 -> vertice = j-((linha-1)*n_vertice);
+		aux_vizinho2 -> vertice = j-((linha-1)*n_vertice); // para descobrir qual o vertice representado pela coluna é so pegar o valor de J e diminuir pelas linhas completas ja vistas anteriromente
 		aux_vizinho2 -> proximo_vizinho = NULL;
 
-   		aux_vertice = vetor->primeiro;
+   		aux_vertice = vetor->primeiro; // inicio da lista de de vertices
 
-		while(aux_vertice->vertice != linha)//ERRO
+		while(aux_vertice->vertice != linha) //encontradando na lista de vertices aleatorio o termo com o vertice que representa o vertice da linha da matriz
 	    {
 	    	aux_vertice = aux_vertice->proximo_vertice;
 	    }
 
 
-		aux_vizinho1 = aux_vertice->primeiro_vizinho;
+		aux_vizinho1 = aux_vertice->primeiro_vizinho; // inicio da lista de vizinhos e nao de vertices
 
 		if(aux_vertice->primeiro_vizinho != NULL)
 		{
 
-			while(aux_vizinho1->proximo_vizinho != NULL)
+			while(aux_vizinho1->proximo_vizinho != NULL) //encontrando ultimo vizinho da lista dauqele vertice
 		    {
 		    	aux_vizinho1 = aux_vizinho1->proximo_vizinho;
 		    	printf("ok");
 		    }
 
-		    aux_vizinho1->proximo_vizinho = aux_vizinho2;
+		    aux_vizinho1->proximo_vizinho = aux_vizinho2; 
 		}
 		else
 		{
-			aux_vizinho1 = aux_vizinho2;
+			aux_vizinho1 = aux_vizinho2; //lista de vizinho daquele vertice tava vazia, entao agr esse é o primeiro termo da lista
 		}
-		printf("1\n");
+		printf("1\n"); //apenas verificando 
 	}
 	else
 	{
-		printf("0\n");
+		printf("0\n");// apenas verificando
 	}
 }
 
