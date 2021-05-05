@@ -74,9 +74,8 @@ void criar_vetor(lista *vetor, int n_vertice)
 	vetor_vertices *aux, *aux1;
 	int i;
 
-    vetor->primeiro = NULL;
-
-    aux1 = vetor->primeiro;
+	vetor->primeiro = NULL;
+	aux1 =vetor->primeiro;
 
 	for (i = 0; i < n_vertice; i++)
 	{
@@ -85,20 +84,23 @@ void criar_vetor(lista *vetor, int n_vertice)
         aux -> vertice = (i+1);
         aux -> cor = NULL;
         aux -> primeiro_vizinho = NULL;
+
         if(vetor->primeiro == NULL)
 		{
 			vetor->primeiro = aux;
 		}
 		else
 		{
-			aux1 = aux;
+			if(aux1 == NULL)
+			{
+				aux1 = vetor->primeiro;
+			}
+
+			aux1->proximo_vertice = aux;
 			aux1 = aux1->proximo_vertice;
 		}
-
     }
-
 }
-
 
 void ligar_vetor(lista *vetor, int valor, int j, int linha, int n_vertice)
 {
