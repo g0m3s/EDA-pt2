@@ -32,12 +32,12 @@ void colorir_vetor(lista *vetor);
 void imprimir_vetor(lista *vetor);
 
 int main() {
-	
+
 	FILE *arquivo;
 	lista vetor;
 	int n_vertice, n_aresta, valor, j=1, linha=1;
 
-	arquivo = fopen("/Users/gabriel/Documents/IFF/EDA/trabalho-pt2/Arquivo.txt", "r");
+	arquivo = fopen("Arquivo.txt", "r");
 
 	if(arquivo != NULL){
 
@@ -60,6 +60,7 @@ int main() {
 
 		colorir_vetor(&vetor);
 		imprimir_vetor(&vetor);
+		printf("\nCREU!");
 	}
 	else
 	{
@@ -127,71 +128,73 @@ void ligar_vetor(lista *vetor, int valor, int j, int linha, int n_vertice) {
 			while(aux_vizinho1->proximo_vizinho != NULL) //encontrando ultimo vizinho da lista dauqele vertice
 		    	aux_vizinho1 = aux_vizinho1->proximo_vizinho;
 
-		    aux_vizinho1->proximo_vizinho = aux_vizinho2; 
+		    aux_vizinho1->proximo_vizinho = aux_vizinho2;
 		}
 		else{
 
 			aux_vertice->primeiro_vizinho = aux_vizinho2; //lista de vizinho daquele vertice tava vazia, entao agr esse é o primeiro termo da lista
-			
-			
+
+
 		}
-		
+
 	}
-	
+
 }
 
 void colorir_vetor(lista *vetor) {
 
 	int nova_cor=1;
-	vetor_vertices *aux;
+	vetor_vertices *aux, *aux2;
 	vizinho *aux1;
 
 	aux = vetor->primeiro;
 
-	while(aux->proximo_vertice != NULL) {
+	while(aux != NULL) 
+	{
+		aux1 = aux->primeiro_vizinho;
+		if(aux->primeiro_vizinho != NULL) 
+		{
+			nova_cor = 1;
+			while(aux1 != NULL) 
+			{
+				aux2 = vetor->primeiro;
+				while(aux2 != NULL)
+				{
+					if(aux1->vertice == aux2->vertice)
+					{
+						if(nova_cor == aux2->cor)
+						{
+							nova_cor++;
+							aux2 = vetor->primeiro;
+						}
+					}
+					aux2 = aux2->proximo_vertice;
+				}
+				aux1 = aux1 ->proximo_vizinho;
+			}	
 
-		aux1 = vetor->primeiro;
-		if(aux->primeiro_vizinho != NULL) {
-
-			while(aux1->proximo_vertice != NULL) {
-
-				if(aux1->vertice == aux->vertice)
-					aux->cor = aux1->cor;
-
-				aux1 = aux1 ->proximo_vertice;
-			}
-
-			aux1 = vetor;
-
-			while(aux1->proximo_vertice != NULL) {
-
-				if(aux1->vertice == aux->vertice && aux1->vertice != aux->vertice)
-					nova_cor++;
-			}
-
-			aux->cor = nova_cor;
+			aux->cor = nova_cor;	
 		}
-
 		aux = aux->proximo_vertice;
 	}
-
-	printf("Numero de cores utilizado foi de %d", nova_cor);
 }
 
 void imprimir_vetor(lista *vetor) {
-	
+
 	vetor_vertices *aux;
 	vizinho *aux1;
 
 	aux = vetor->primeiro;
 	aux1 = aux->primeiro_vizinho;
 
-	while(aux != NULL){
+	while(aux != NULL)
+	{
 
 		aux1 = aux->primeiro_vizinho;
 		printf("\n%d -> ", aux->vertice);
 
-		while(aux1 != NULL){
+		while(aux1 != NULL)
+		{
 
 			printf("%d ", aux1->vertice);
 			aux1 = aux1->proximo_vizinho;
@@ -200,5 +203,13 @@ void imprimir_vetor(lista *vetor) {
 
 		aux = aux->proximo_vertice;
 	}
+	printf("\n\n");
+	aux = vetor->primeiro;
+	while(aux != NULL)
+	{
+		printf("%d -> %d\n", aux->vertice, aux->cor);
+		aux=aux->proximo_vertice;
+	}
+
 }
 
