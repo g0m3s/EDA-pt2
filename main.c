@@ -3,15 +3,13 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-struct tipo_vizinho
-{
+struct tipo_vizinho{
     int vertice;
     struct tipo_vizinho *proximo_vizinho;
 
 }typedef vizinho;
 
-struct tipo_vetor
-{
+struct tipo_vetor{
 	int vertice;
 	int cor;
 	struct tipo_vetor *proximo_vertice;
@@ -19,8 +17,7 @@ struct tipo_vetor
 
 }typedef vetor_vertices;
 
-struct tipo_lista
-{
+struct tipo_lista{
 	vetor_vertices *primeiro;
 }typedef lista;
 
@@ -45,12 +42,11 @@ int main() {
 
 		criar_vetor(&vetor, n_vertice);
 
-		while(!feof(arquivo))
-		{
+		while(!feof(arquivo)){
 			fscanf(arquivo,"%d", &valor);
 
-			if(j > (n_vertice*linha)) //é o numero do vertice na qual a linha da matriz se refere, sempre que pula de linha na matriz muda o vertice referente
-			{
+			if(j > (n_vertice*linha)){ //é o numero do vertice na qual a linha da matriz se refere, sempre que pula de linha na matriz muda o vertice referente
+
 				linha++;
 			}
 
@@ -60,10 +56,8 @@ int main() {
 
 		colorir_vetor(&vetor);
 		imprimir_vetor(&vetor);
-		printf("\nCREU!");
 	}
-	else
-	{
+	else{
 		printf("Arquivo Vazio!");
 	}
 
@@ -71,30 +65,25 @@ int main() {
 	return 0;
 }
 
-void criar_vetor(lista *vetor, int n_vertice)
-{
+void criar_vetor(lista *vetor, int n_vertice){
 	vetor_vertices *aux, *aux1;
 	int i;
 
 	vetor->primeiro = NULL;
 	aux1 =vetor->primeiro;
 
-	for (i = 0; i < n_vertice; i++)
-	{
+	for (i = 0; i < n_vertice; i++){
         aux = (vetor_vertices*)malloc(sizeof(vetor_vertices));
         aux -> proximo_vertice = NULL; // n representa o vertice vizinho, é apenas a lista de vertices em ordem sequencial (aleatorio visualmente)
         aux -> vertice = (i+1);
         aux -> cor = 0;
         aux -> primeiro_vizinho = NULL; //vizinho inicialmente será Null pois n lemos a matriz de adjacencia ainda
 
-        if(vetor->primeiro == NULL)
-		{
+        if(vetor->primeiro == NULL){
 			vetor->primeiro = aux;
 		}
-		else
-		{
-			if(aux1 == NULL)
-			{
+		else{
+			if(aux1 == NULL){
 				aux1 = vetor->primeiro;
 			}
 
@@ -104,13 +93,13 @@ void criar_vetor(lista *vetor, int n_vertice)
     }
 }
 
-void ligar_vetor(lista *vetor, int valor, int j, int linha, int n_vertice) {
+void ligar_vetor(lista *vetor, int valor, int j, int linha, int n_vertice){
 
 	vetor_vertices *aux_vertice;
 	vizinho *aux_vizinho1, *aux_vizinho2;
 
 	//valor = 1 quer dizer q o vertice que a linha representa é vizinho do vertice que a coluna representa
-    if(valor == 1) {
+    if(valor == 1){
 
 		aux_vizinho2 = (vizinho*)malloc(sizeof(vizinho));
 		aux_vizinho2 -> vertice = j-((linha-1)*n_vertice); // para descobrir qual o vertice representado pela 'coluna é so pegar o valor de J e diminuir pelas linhas completas ja vistas anteriromente
@@ -118,16 +107,16 @@ void ligar_vetor(lista *vetor, int valor, int j, int linha, int n_vertice) {
 
    		aux_vertice = vetor->primeiro; // inicio da lista de de vertices
 
-		while(aux_vertice->vertice != linha) //encontradando na lista de vertices aleatorio o termo com o vertice que representa o vertice da linha da matriz
+		while(aux_vertice->vertice != linha){ //encontradando na lista de vertices aleatorio o termo com o vertice que representa o vertice da linha da matriz
 	    	aux_vertice = aux_vertice->proximo_vertice;
-
+		}
 		aux_vizinho1 = aux_vertice->primeiro_vizinho; // inicio da lista de vizinhos e nao de vertices
 
 		if(aux_vizinho1 != NULL){
 
-			while(aux_vizinho1->proximo_vizinho != NULL) //encontrando ultimo vizinho da lista dauqele vertice
+			while(aux_vizinho1->proximo_vizinho != NULL){ //encontrando ultimo vizinho da lista dauqele vertice
 		    	aux_vizinho1 = aux_vizinho1->proximo_vizinho;
-
+			}
 		    aux_vizinho1->proximo_vizinho = aux_vizinho2;
 		}
 		else{
@@ -141,74 +130,64 @@ void ligar_vetor(lista *vetor, int valor, int j, int linha, int n_vertice) {
 
 }
 
-void colorir_vetor(lista *vetor) {
+void colorir_vetor(lista *vetor){
 
 	int nova_cor=1;
-	vetor_vertices *aux, *aux2;
-	vizinho *aux1;
+	vetor_vertices *aux_vertice1, *aux_vertice2;
+	vizinho *aux_vizinho;
 
-	aux = vetor->primeiro;
+	aux_vertice1 = vetor->primeiro;
 
-	while(aux != NULL) 
-	{
-		aux1 = aux->primeiro_vizinho;
-		if(aux->primeiro_vizinho != NULL) 
-		{
+	while(aux_vertice1 != NULL){
+		aux_vizinho = aux_vertice1->primeiro_vizinho;
+		if(aux_vertice1->primeiro_vizinho != NULL){
 			nova_cor = 1;
-			while(aux1 != NULL) 
-			{
-				aux2 = vetor->primeiro;
-				while(aux2 != NULL)
-				{
-					if(aux1->vertice == aux2->vertice)
-					{
-						if(nova_cor == aux2->cor)
-						{
+			while(aux_vizinho != NULL){
+				aux_vertice2 = vetor->primeiro;
+				while(aux_vertice2 != NULL){
+					if(aux_vizinho->vertice == aux_vertice2->vertice){
+						if(nova_cor == aux_vertice2->cor){
 							nova_cor++;
-							aux2 = vetor->primeiro;
+							aux_vertice2 = vetor->primeiro;
 						}
 					}
-					aux2 = aux2->proximo_vertice;
+					aux_vertice2 = aux_vertice2->proximo_vertice;
 				}
-				aux1 = aux1 ->proximo_vizinho;
-			}	
-
-			aux->cor = nova_cor;	
+				aux_vizinho = aux_vizinho ->proximo_vizinho;
+			}
+			aux_vertice1->cor = nova_cor;
 		}
-		aux = aux->proximo_vertice;
+		aux_vertice1 = aux_vertice1->proximo_vertice;
 	}
 }
 
-void imprimir_vetor(lista *vetor) {
+void imprimir_vetor(lista *vetor){
 
-	vetor_vertices *aux;
-	vizinho *aux1;
+	vetor_vertices *aux_vertice;
+	vizinho *aux_vizinho;
 
-	aux = vetor->primeiro;
-	aux1 = aux->primeiro_vizinho;
+	aux_vertice = vetor->primeiro;
+	aux_vizinho = aux_vertice->primeiro_vizinho;
 
-	while(aux != NULL)
-	{
+	while(aux_vertice != NULL){
 
-		aux1 = aux->primeiro_vizinho;
-		printf("\n%d -> ", aux->vertice);
+		aux_vizinho = aux_vertice->primeiro_vizinho;
+		printf("\n%d -> ", aux_vertice->vertice);
 
-		while(aux1 != NULL)
-		{
+		while(aux_vizinho != NULL){
 
-			printf("%d ", aux1->vertice);
-			aux1 = aux1->proximo_vizinho;
+			printf("%d ", aux_vizinho->vertice);
+			aux_vizinho = aux_vizinho->proximo_vizinho;
 
 		}
 
-		aux = aux->proximo_vertice;
+		aux_vertice = aux_vertice->proximo_vertice;
 	}
 	printf("\n\n");
-	aux = vetor->primeiro;
-	while(aux != NULL)
-	{
-		printf("%d -> %d\n", aux->vertice, aux->cor);
-		aux=aux->proximo_vertice;
+	aux_vertice = vetor->primeiro;
+	while(aux_vertice != NULL){
+		printf("%d -> %d\n", aux_vertice->vertice, aux_vertice->cor);
+		aux_vertice=aux_vertice->proximo_vertice;
 	}
 
 }
